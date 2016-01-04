@@ -27,7 +27,7 @@ MongoConfigsvr3:
   command: '/bin/bash -c "mkdir -p /mmm/configdb && mongod --configsvr  --dbpath /mmm --replSet configReplSet --port 27019 --storageEngine wiredTiger"'
 MongoRouter:
   image: docker.iwanna.xyz:5000/mongo
-  command: '/bin/bash -c "mongo {{MongoConfigsvr3}}:27017/config --eval \'printjson(rs.initiate({_id: \"configReplSet\",configsvr:true,members:[{_id: 0, host:\"{{MongoConfigsvr1}}:27019\"},{_id: 1, host: \"{{MongoConfigsvr2}}:27019\"},{_id: 2, host: \"{{MongoConfigsvr3}}:27019\"}]}))\' ; mongos --configdb configReplSet/{{MongoConfigsvr1}}:27019,{{MongoConfigsvr2}}:27019,{{MongoConfigsvr3}}:27019"'
+  command: '/bin/bash -c "mongo {{MongoConfigsvr3}}:27017/config --eval \'printjson(rs.initiate({_id: \"configReplSet\",configsvr:true,members:[{_id: 0, host:\"{{MongoConfigsvr1}}:27019\"},{_id: 1, host: \"{{MongoConfigsvr2}}:27019\"},{_id: 2, host: \"{{MongoConfigsvr3}}:27019\"}]}))\' && mongos --configdb configReplSet/{{MongoConfigsvr1}}:27019,{{MongoConfigsvr2}}:27019,{{MongoConfigsvr3}}:27019"'
   links:
     - MongoConfigsvr3
     - MongoConfigsvr2
